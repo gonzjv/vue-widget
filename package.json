@@ -6,12 +6,12 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/vue-widget.umd.cjs",
-  "module": "./dist/vue-widget.ts",
-  "exports":{
-    ".":{
-      "import": "./dist/vue-widget.ts",
-      "require":"./dist/vue-widget.umd.cjs"
+  "main": "./dist/vue-widget.umd.js",
+  "module": "./dist/vue-widget.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-widget.es.js",
+      "require": "./dist/vue-widget.umd.js"
     }
   },
   "scripts": {
@@ -20,7 +20,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vue-widget": "vue-widget-0.0.0.tgz"
   },
   "devDependencies": {
     "@types/node": "^18.6.5",

@@ -7,9 +7,10 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'lib/main.ts'),
-      name: 'MyLib',
-      fileName: 'my-lib',
+      entry: resolve(__dirname, 'src/export.ts'),
+      name: 'VueWidget',
+      fileName: (format) =>
+        `vue-widget.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],
