@@ -4,6 +4,16 @@ import { ref } from 'vue'
 defineProps<{ msg: string }>()
 
 const count = ref(0)
+
+const API_KEY= '2671b0be896edd79fd71f7cdabc7d1dd'
+const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=${API_KEY}`)
+// .then((r)=>r.json())
+// // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
+
+// const data = 'data'
+const data = await response.json()
+console.log("data", data)
+
 </script>
 
 <template>
