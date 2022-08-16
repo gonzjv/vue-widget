@@ -3,17 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/vue-widget.umd.js",
-  "module": "./dist/vue-widget.es.js",
-  "exports": {
-    ".": {
-      "import": "./dist/vue-widget.es.js",
-      "require": "./dist/vue-widget.umd.js"
-    }
-  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
