@@ -1,24 +1,36 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
+interface IWeatherData {
+  name: string
+}
+const initialWeatherData: IWeatherData = {
+  name: "Minsk"
+}
 defineProps<{ msg: string }>()
 
 const count = ref(0)
+const API_KEY = '2671b0be896edd79fd71f7cdabc7d1dd'
+const city= ref('Minsk')
+let defWeather = ref(initialWeatherData)
 
-const API_KEY= '2671b0be896edd79fd71f7cdabc7d1dd'
-const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=${API_KEY}`)
-// .then((r)=>r.json())
-// // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
-// const data = 'data'
-const data = await response.json()
-console.log("data", data)
+const getData = async () => {
+
+  const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=${API_KEY}`)
+  const data = await response.json()
+  console.log("data", data)
+  defWeather.value = data
+  console.log("defWeather", defWeather.value)
+}
 
 </script>
 
 <template>
   <h1>{{ msg }}</h1>
-
+  <p>{{city}}</p>
+  <input type="text" placeholder="Enter a city..." v-model="city" />
+  <button @click="getData"> Get Weather Data</button>
+  <div v-if="defWeather.name">{{ defWeather.name }}</div>
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
     <p>
@@ -29,9 +41,8 @@ console.log("data", data)
 
   <p>
     Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
+    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank">create-vue</a>, the official Vue + Vite
+    starter
   </p>
   <p>
     Install
