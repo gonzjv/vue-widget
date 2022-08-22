@@ -10,8 +10,8 @@ defineProps<{ msg: string }>()
 
 const count = ref(0)
 const API_KEY = '2671b0be896edd79fd71f7cdabc7d1dd'
-const city= ref('Minsk')
-let defWeather = ref(initialWeatherData)
+const city = ref('Minsk')
+let weatherData = ref(initialWeatherData)
 
 
 const getData = async () => {
@@ -19,18 +19,23 @@ const getData = async () => {
   const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=${API_KEY}`)
   const data = await response.json()
   console.log("data", data)
-  defWeather.value = data
-  console.log("defWeather", defWeather.value)
+  weatherData.value = data
+  console.log("weatherData", weatherData.value.name)
 }
 
+const getCityData = () => {
+  console.log('getCityData for', city.value)
+}
 </script>
 
 <template>
   <h1>{{ msg }}</h1>
-  <p>{{city}}</p>
-  <input type="text" placeholder="Enter a city..." v-model="city" />
+  <p>{{ city }}</p>
+  <form @submit.prevent="getCityData">
+    <input type="text" placeholder="Enter a city..." v-model="city" />
+  </form>
   <button @click="getData"> Get Weather Data</button>
-  <div v-if="defWeather.name">{{ defWeather.name }}</div>
+  <div v-if="weatherData.name">{{ weatherData.name }}</div>
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
     <p>
