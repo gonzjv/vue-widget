@@ -5,7 +5,7 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex justify-center gap-1">
     <a href="https://vitejs.dev" target="_blank">
       <img
         src="/vite.svg"

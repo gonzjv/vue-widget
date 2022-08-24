@@ -1,18 +1,19 @@
 export interface IWeatherData {
-  name: string
+  name: string;
   sys: {
-    country: string
-  }
+    country: string;
+  };
   main: {
-    temp: number
-    feels_like: number
-  }
-  weather?: {
-    main: string
-    description: string
-  }[]
+    temp: number;
+    feels_like: number;
+  };
+  weather: {
+    main: string;
+    description: string;
+    icon: string;
+  }[];
   wind: {
-    speed: number
-    deg: number
-  }
+    speed: number;
+    deg: number;
+  };
 }
