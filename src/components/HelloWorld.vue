@@ -29,6 +29,9 @@ const API_KEY =
   '2671b0be896edd79fd71f7cdabc7d1dd';
 const UNITS = 'metric';
 const city = ref('Minsk');
+let iconUrl = ref(
+  'http://openweathermap.org/img/wn/10d@2x.png'
+);
 let weatherData = ref(initialWeatherData);
 
 const getCoordinates = async (city: string) => {
@@ -51,6 +54,8 @@ const getWeatherData = async (city: string) => {
   const data = await response.json();
   // console.log('data', data)
   weatherData.value = data;
+  iconUrl.value =
+    weatherData.value.weather[0].icon;
   console.log(
     'weatherDataName',
     weatherData.value.name
@@ -92,10 +97,7 @@ const getWeatherData = async (city: string) => {
           src="http://openweathermap.org/img/wn/${}@2x.png"
           alt=""
         /> -->
-        <img
-          src="'http://openweathermap.org/img/wn/'+ {{weatherData.weather[0].icon}} + '@2x.png'"
-          alt=""
-        />
+        <img src="{{iconUrl}}" alt="" />
         <p>
           {{ weatherData.main.temp }}
           <span>C</span>
