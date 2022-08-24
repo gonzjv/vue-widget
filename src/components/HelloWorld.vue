@@ -63,7 +63,10 @@ const getWeatherData = async (city: string) => {
       Get Weather Data
     </button>
   </form>
-  <div v-if="weatherData.name">
+  <div
+    v-if="weatherData.name"
+    class="text-cyan-400"
+  >
     <p>{{ weatherData.name }}</p>
     <p>{{ weatherData.sys.country }}</p>
     <p>
