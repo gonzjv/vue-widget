@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-interface IWeatherData {
-  name: string
-  sys: {
-    country: string
-  }
-  main: {
-    temp: number
-  }
-}
+import { IWeatherData } from '../interfaces/interfaces'
+
 const initialWeatherData: IWeatherData = {
   name: 'Minsk',
   sys: { country: 'BY' },
   main: {
     temp: 0,
+    feels_like: 0,
+  },
+  wind: {
+    speed: 0,
+    deg: 0,
   },
 }
 defineProps<{ msg: string }>()
 
 const count = ref(0)
 const API_KEY = '2671b0be896edd79fd71f7cdabc7d1dd'
+const UNITS = 'metric'
 const city = ref('Minsk')
 let weatherData = ref(initialWeatherData)
 
@@ -37,7 +36,7 @@ const getWeatherData = async (city: string) => {
   console.log('coordinates', coordinates)
 
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${API_KEY}`
+    `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&units=${UNITS}&appid=${API_KEY}`
   )
 
   const data = await response.json()
@@ -70,6 +69,25 @@ const getWeatherData = async (city: string) => {
     <p>
       {{ weatherData.main.temp }}
       <span>Temp</span>
+    </p>
+    <p>
+      {{ weatherData.main.feels_like }}
+      <span>Temp, feels like</span>
+    </p>
+    <p v-if="weatherData.weather">
+      {{ weatherData.weather[0].description }}
+      <span>Descrition</span>
+    </p>
+    <p>
+      <span>
+        <img
+          class="wind-direction"
+          src="../assets/wind-arrow.svg"
+          alt="wind direction"
+        />
+      </span>
+      {{ weatherData.wind.speed }}
+      <span>Wind</span>
     </p>
     <!-- <p>{{ weatherData.sys.country }}</p> -->
   </div>
@@ -109,5 +127,10 @@ const getWeatherData = async (city: string) => {
 <style scoped>
 .read-the-docs {
   color: #888;
+}
+.wind-direction {
+  width: 10px;
+  height: 10px;
+  color: white;
 }
 </style>
