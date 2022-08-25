@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { IWeatherData } from '../interfaces/interfaces';
-import { Cog8ToothIcon } from '@heroicons/vue/20/solid';
+import {
+  Cog8ToothIcon,
+  PaperAirplaneIcon,
+} from '@heroicons/vue/20/solid';
 
 const initialWeatherData: IWeatherData = {
   name: 'Minsk',
@@ -45,21 +48,13 @@ const getCoordinates = async (city: string) => {
 
 const getWeatherData = async (city: string) => {
   const coordinates = await getCoordinates(city);
-  console.log('coordinates', coordinates);
-
   const response = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&units=${UNITS}&appid=${API_KEY}`
   );
 
   const data = await response.json();
-  // console.log('data', data)
   weatherData.value = data;
-  iconUrl.value =
-    weatherData.value.weather[0].icon;
-  console.log(
-    'weatherDataName',
-    weatherData.value.name
-  );
+  iconUrl.value = `http://openweathermap.org/img/wn/${weatherData.value.weather[0].icon}@2x.png`;
   console.log('weatherData', weatherData.value);
 };
 </script>
@@ -80,7 +75,7 @@ const getWeatherData = async (city: string) => {
     </form>
     <article
       v-if="weatherData.name"
-      class="text-slate-300 flex flex-col gap-1 border-2 border-cyan-200 w-80 p-2"
+      class="text-slate-300 flex flex-col gap-1 border-2 border-cyan-200 w-80 p-4"
     >
       <header
         class="flex gap-1 items-center justify-between"
@@ -92,36 +87,28 @@ const getWeatherData = async (city: string) => {
         </div>
         <Cog8ToothIcon class="w-5" />
       </header>
-      <figure class="flex">
-        <!-- <img
-          src="http://openweathermap.org/img/wn/${}@2x.png"
-          alt=""
-        /> -->
-        <img src="{{iconUrl}}" alt="" />
-        <p>
+      <figure
+        class="flex items-center justify-center"
+      >
+        <img :src="iconUrl" />
+        <figcaption class="font-bold text-3xl">
           {{ weatherData.main.temp }}
-          <span>C</span>
-        </p>
+          <span>&deg;C</span>
+        </figcaption>
       </figure>
-      <p>
-        {{ weatherData.main.feels_like }}
-        <span>Temp, feels like</span>
-      </p>
-      <p>
-        {{ weatherData.weather[0].description }}
-        <span>Descrition</span>
-      </p>
-      <p>
+      <p class="flex gap-1 justify-center">
+        <span>Feels like</span>
         <span>
-          <img
-            class="wind-direction"
-            src="../assets/wind-arrow.svg"
-            alt="wind direction"
-          />
+          {{ weatherData.main.feels_like }}&deg;C,
         </span>
-        {{ weatherData.wind.speed }}
-        <span>Wind</span>
+        <span>
+          {{ weatherData.weather[0].description }}
+        </span>
       </p>
+      <div class="flex justify-center gap-1">
+        <PaperAirplaneIcon class="w-5" />
+        <p>{{ weatherData.wind.speed }} m/s</p>
+      </div>
       <!-- <p>{{ weatherData.sys.country }}</p> -->
     </article>
     <div class="card">
