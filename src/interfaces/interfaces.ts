@@ -6,6 +6,8 @@ export interface IWeatherData {
   main: {
     temp: number;
     feels_like: number;
+    pressure: number;
+    humidity: number;
   };
   weather: {
     main: string;
@@ -16,4 +18,5 @@ export interface IWeatherData {
     speed: number;
     deg: number;
   };
+  visibility: number;
 }

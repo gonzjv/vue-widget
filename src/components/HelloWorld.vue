@@ -4,6 +4,9 @@ import { IWeatherData } from '../interfaces/interfaces';
 import {
   Cog8ToothIcon,
   PaperAirplaneIcon,
+  ArrowDownTrayIcon,
+  BeakerIcon,
+  EyeIcon,
 } from '@heroicons/vue/20/solid';
 
 const initialWeatherData: IWeatherData = {
@@ -12,6 +15,8 @@ const initialWeatherData: IWeatherData = {
   main: {
     temp: 0,
     feels_like: 0,
+    pressure: 0,
+    humidity: 0,
   },
   weather: [
     {
@@ -24,6 +29,7 @@ const initialWeatherData: IWeatherData = {
     speed: 0,
     deg: 0,
   },
+  visibility: 0,
 };
 defineProps<{ msg: string }>();
 
@@ -75,12 +81,12 @@ const getWeatherData = async (city: string) => {
     </form>
     <article
       v-if="weatherData.name"
-      class="text-slate-300 flex flex-col gap-1 border-2 border-cyan-200 w-80 p-4"
+      class="text-slate-300 flex flex-col gap-3 border-2 border-cyan-200 w-80 p-4"
     >
       <header
         class="flex gap-1 items-center justify-between"
       >
-        <div class="flex gap-1">
+        <div class="flex gap-1 text-xl font-bold">
           <p>{{ weatherData.name }}</p>
           <p>,</p>
           <p>{{ weatherData.sys.country }}</p>
@@ -96,7 +102,7 @@ const getWeatherData = async (city: string) => {
           <span>&deg;C</span>
         </figcaption>
       </figure>
-      <p class="flex gap-1 justify-center">
+      <section class="flex gap-1 justify-center">
         <span>Feels like</span>
         <span>
           {{ weatherData.main.feels_like }}&deg;C,
@@ -104,45 +110,41 @@ const getWeatherData = async (city: string) => {
         <span>
           {{ weatherData.weather[0].description }}
         </span>
-      </p>
-      <div class="flex justify-center gap-1">
-        <PaperAirplaneIcon class="w-5" />
-        <p>{{ weatherData.wind.speed }} m/s</p>
-      </div>
-      <!-- <p>{{ weatherData.sys.country }}</p> -->
+      </section>
+      <section class="flex justify-center gap-7">
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-center gap-1">
+            <PaperAirplaneIcon class="w-5" />
+            <p>
+              {{ weatherData.wind.speed }} m/s
+            </p>
+          </div>
+          <div class="flex justify-center gap-1">
+            <ArrowDownTrayIcon class="w-5" />
+            <p>
+              {{ weatherData.main.pressure }} hPa
+            </p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-center gap-1">
+            <BeakerIcon class="w-5" />
+            <p>
+              {{ weatherData.main.humidity }} %
+            </p>
+          </div>
+          <div class="flex justify-center gap-1">
+            <EyeIcon class="w-5" />
+            <p>{{ weatherData.visibility }} m</p>
+          </div>
+        </div>
+      </section>
     </article>
     <div class="card">
       <button type="button" @click="count++">
         count is {{ count }}
       </button>
-      <p>
-        Edit
-        <code>components/HelloWorld.vue</code> to
-        test HMR
-      </p>
     </div>
-
-    <p>
-      Check out
-      <a
-        href="https://vuejs.org/guide/quick-start.html#local"
-        target="_blank"
-        >create-vue</a
-      >, the official Vue + Vite starter
-    </p>
-    <p>
-      Install
-      <a
-        href="https://github.com/johnsoncodehk/volar"
-        target="_blank"
-        >Volar</a
-      >
-      in your IDE for a better DX
-    </p>
-    <p class="read-the-docs">
-      Click on the Vite and Vue logos to learn
-      more
-    </p>
   </div>
 </template>
 
