@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { IWeatherData } from '../interfaces/interfaces';
+import { onBeforeMount, ref } from 'vue';
+// import { IWeatherData } from '../interfaces/interfaces';
 import {
   Cog8ToothIcon,
   PaperAirplaneIcon,
@@ -9,39 +9,16 @@ import {
   EyeIcon,
 } from '@heroicons/vue/20/solid';
 
-const initialWeatherData: IWeatherData = {
-  name: 'Minsk',
-  sys: { country: 'BY' },
-  main: {
-    temp: 0,
-    feels_like: 0,
-    pressure: 0,
-    humidity: 0,
-  },
-  weather: [
-    {
-      description: '',
-      main: '',
-      icon: '',
-    },
-  ],
-  wind: {
-    speed: 0,
-    deg: 0,
-  },
-  visibility: 0,
-};
-defineProps<{ msg: string }>();
+const props = defineProps<{ cityName: string }>();
 
-const count = ref(0);
 const API_KEY =
   '2671b0be896edd79fd71f7cdabc7d1dd';
 const UNITS = 'metric';
-const city = ref('Minsk');
+// const city = ref('Minsk');
 let iconUrl = ref(
   'http://openweathermap.org/img/wn/10d@2x.png'
 );
-let weatherData = ref(initialWeatherData);
+let weatherData = ref();
 
 const getCoordinates = async (city: string) => {
   const response = await fetch(
@@ -61,15 +38,18 @@ const getWeatherData = async (city: string) => {
   const data = await response.json();
   weatherData.value = data;
   iconUrl.value = `http://openweathermap.org/img/wn/${weatherData.value.weather[0].icon}@2x.png`;
-  console.log('weatherData', weatherData.value);
+  // console.log('weatherData', weatherData.value);
 };
+
+onBeforeMount(() => {
+  getWeatherData(props.cityName);
+});
 </script>
 
 <template>
   <div class="flex flex-col items-center gap-2">
-    <h1>{{ msg }}</h1>
-    <!-- <p>{{ city }}</p> -->
-    <form @submit.prevent="getWeatherData(city)">
+    <h1>{{ cityName }}</h1>
+    <!-- <form @submit.prevent="getWeatherData(city)">
       <input
         type="text"
         placeholder="Enter a city..."
@@ -78,9 +58,9 @@ const getWeatherData = async (city: string) => {
       <button type="submit">
         Get Weather Data
       </button>
-    </form>
+    </form> -->
     <article
-      v-if="weatherData.name"
+      v-if="weatherData"
       class="text-slate-300 flex flex-col gap-3 border-2 border-cyan-200 w-80 p-4"
     >
       <header
@@ -140,11 +120,11 @@ const getWeatherData = async (city: string) => {
         </div>
       </section>
     </article>
-    <div class="card">
+    <!-- <div class="card">
       <button type="button" @click="count++">
         count is {{ count }}
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
