@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
 // import { IWeatherData } from '../interfaces/interfaces';
+import { getWeatherInfo } from './../services/apiService';
 import {
   Cog8ToothIcon,
   PaperAirplaneIcon,
@@ -9,46 +10,23 @@ import {
   EyeIcon,
 } from '@heroicons/vue/20/solid';
 
-const props = defineProps<{ cityName: string }>();
+const props = defineProps<{ city: string }>();
 
-const API_KEY =
-  '2671b0be896edd79fd71f7cdabc7d1dd';
-const UNITS = 'metric';
-// const city = ref('Minsk');
-let iconUrl = ref(
-  'http://openweathermap.org/img/wn/10d@2x.png'
-);
+let iconUrl = ref();
 let weatherData = ref();
 
-const getCoordinates = async (city: string) => {
-  const response = await fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${API_KEY}`
+onBeforeMount(async () => {
+  const apiData = await getWeatherInfo(
+    props.city
   );
-  const [data] = await response.json();
-  // console.log('response', data)
-  return { lat: data.lat, lon: data.lon };
-};
-
-const getWeatherData = async (city: string) => {
-  const coordinates = await getCoordinates(city);
-  const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&units=${UNITS}&appid=${API_KEY}`
-  );
-
-  const data = await response.json();
-  weatherData.value = data;
-  iconUrl.value = `http://openweathermap.org/img/wn/${weatherData.value.weather[0].icon}@2x.png`;
-  // console.log('weatherData', weatherData.value);
-};
-
-onBeforeMount(() => {
-  getWeatherData(props.cityName);
+  weatherData.value = apiData.weatherData;
+  iconUrl.value = apiData.iconUrl;
 });
 </script>
 
 <template>
   <div class="flex flex-col items-center gap-2">
-    <h1>{{ cityName }}</h1>
+    <h1>{{ city }}</h1>
     <!-- <form @submit.prevent="getWeatherData(city)">
       <input
         type="text"
@@ -131,10 +109,5 @@ onBeforeMount(() => {
 <style scoped>
 .read-the-docs {
   color: #888;
-}
-.wind-direction {
-  width: 10px;
-  height: 10px;
-  color: white;
 }
 </style>
