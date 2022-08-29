@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { reactive, ref, toRefs } from 'vue';
+import {
+  onUpdated,
+  reactive,
+  ref,
+  toRefs,
+} from 'vue';
 import CityItem from './components/CityItem.vue';
 import {
   Cog8ToothIcon,
@@ -9,6 +14,11 @@ import {
   CheckIcon,
 } from '@heroicons/vue/24/outline';
 import { IState } from './interfaces/interfaces';
+import draggable from 'vuedraggable';
+
+onUpdated(() => {
+  console.log('locationArr', locationsArr);
+});
 
 let state = reactive({
   editMode: false,
@@ -19,7 +29,7 @@ let state = reactive({
 let { editMode, locationsArr, newLocation } =
   toRefs(state);
 // const editMode = ref(false);
-
+const drag = false;
 const deleteLocation = (location: string) => {
   locationsArr.value = locationsArr.value.filter(
     (el) => el !== location
@@ -97,6 +107,16 @@ const addLocation = (location: string) => {
           </div>
         </label>
       </form>
+      <draggable
+        v-model="locationsArr"
+        @start="drag = true"
+        @end="drag = false"
+        item-key="element"
+      >
+        <template #item="{ element }">
+          <div>{{ element }}</div>
+        </template>
+      </draggable>
     </aside>
     <button
       class="hover:border-transparent absolute top-4 right-5"
