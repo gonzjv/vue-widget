@@ -6,20 +6,31 @@ import {
   ArrowsPointingOutIcon,
   TrashIcon,
   ArrowUturnLeftIcon,
+  CheckIcon,
 } from '@heroicons/vue/24/outline';
 import { IState } from './interfaces/interfaces';
 
 let state = reactive({
   editMode: false,
   locationsArr: ['Minsk', 'Soligorsk'],
+  newLocation: '',
 });
 
-let { editMode, locationsArr } = toRefs(state);
+let { editMode, locationsArr, newLocation } =
+  toRefs(state);
 // const editMode = ref(false);
 
 const deleteLocation = (location: string) => {
   locationsArr.value = locationsArr.value.filter(
     (el) => el !== location
+  );
+};
+
+const addLocation = (location: string) => {
+  locationsArr.value.push(location);
+  console.log(
+    'new locationArr',
+    locationsArr.value
   );
 };
 </script>
@@ -30,10 +41,12 @@ const deleteLocation = (location: string) => {
   >
     <aside
       v-if="editMode"
-      class="p-4 flex flex-col gap-3 absolute top-0 left-0 h-full w-full bg-slate-900"
+      class="p-4 flex flex-col gap-6 absolute top-0 left-0 h-full w-full bg-slate-900"
     >
       <header class="flex">
-        <h1 class="text-xl">Settings</h1>
+        <h1 class="text-xl font-bold">
+          Settings
+        </h1>
         <button class="hover:border-transparent">
           <ArrowUturnLeftIcon
             @click="editMode = false"
@@ -62,6 +75,28 @@ const deleteLocation = (location: string) => {
           </button>
         </li>
       </ul>
+      <form
+        class="flex flex-col gap-1"
+        action=""
+        @submit.prevent="addLocation(newLocation)"
+      >
+        <label class="text-left font-bold"
+          >Add Location:
+          <div class="flex gap-2">
+            <input
+              required
+              class="rounded w-44"
+              type="text"
+              v-model="newLocation"
+            />
+            <button
+              class="w-8 justify-center flex"
+            >
+              <CheckIcon class="w-5" />
+            </button>
+          </div>
+        </label>
+      </form>
     </aside>
     <button
       class="hover:border-transparent absolute top-4 right-5"
