@@ -27,17 +27,16 @@ onBeforeMount(async () => {
 <template>
   <article
     v-if="weatherData"
-    class="text-slate-300 flex flex-col gap-3 border-2 border-cyan-200 w-80 p-4"
+    class="text-slate-300 flex flex-col gap-3 border-cyan-200 w-80 p-4"
   >
     <header
       class="flex gap-1 items-center justify-between"
     >
-      <div class="flex gap-1 text-xl font-bold">
+      <h1 class="flex gap-1 text-xl">
         <p>{{ weatherData.name }}</p>
         <p>,</p>
         <p>{{ weatherData.sys.country }}</p>
-      </div>
-      <Cog8ToothIcon class="w-5" />
+      </h1>
     </header>
     <figure
       class="flex items-center justify-center"

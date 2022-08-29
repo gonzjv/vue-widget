@@ -20,3 +20,8 @@ export interface IWeatherData {
   };
   visibility: number;
 }
+
+export interface IState {
+  editMode: boolean;
+  locationsArr: string[];
+}
