@@ -4,7 +4,7 @@ const UNITS = 'metric';
 
 const getCoordinates = async (city: string) => {
   const response = await fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${API_KEY}`
+    `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${API_KEY}`
   );
   const [data] = await response.json();
   // console.log('response', data)
@@ -21,7 +21,7 @@ export const getWeatherInfo = async (
 
   const data = await response.json();
 
-  const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+  const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
   return {
     weatherData: data,
     iconUrl: iconUrl,
