@@ -47,11 +47,11 @@ const addLocation = (location: string) => {
 
 <template>
   <main
-    class="relative flex flex-col gap-8 border-green-300"
+    class="w-80 min-h-screen relative flex flex-col gap-8 border-green-300"
   >
     <aside
       v-if="editMode"
-      class="p-4 flex flex-col gap-6 absolute top-0 left-0 h-full w-full bg-slate-900"
+      class="p-4 flex flex-col gap-6 absolute top-0 left-0 h-160 w-80 bg-slate-900"
     >
       <header class="flex">
         <h1 class="text-xl font-bold">
@@ -64,27 +64,34 @@ const addLocation = (location: string) => {
           />
         </button>
       </header>
-      <ul class="flex flex-col gap-2">
-        <li
-          v-for="location in locationsArr"
-          class="list-none border-2 border-indigo-600 flex justify-between p-1"
-        >
-          <div class="flex gap-2">
-            <ArrowsPointingOutIcon class="w-5" />
-            <p>
-              {{ location }}
-            </p>
-          </div>
-          <button
-            class="w-10 flex justify-center"
+      <draggable
+        v-model="locationsArr"
+        @start="drag = true"
+        @end="drag = false"
+      >
+        <template #item="{ element }">
+          <li
+            class="mb-3 list-none border-2 border-indigo-600 flex justify-between p-1"
           >
-            <TrashIcon
-              @click="deleteLocation(location)"
-              class="w-5"
-            />
-          </button>
-        </li>
-      </ul>
+            <div class="flex gap-2">
+              <ArrowsPointingOutIcon
+                class="w-5"
+              />
+              <p>
+                {{ element }}
+              </p>
+            </div>
+            <button
+              class="w-10 flex justify-center"
+            >
+              <TrashIcon
+                @click="deleteLocation(element)"
+                class="w-5"
+              />
+            </button>
+          </li>
+        </template>
+      </draggable>
       <form
         class="flex flex-col gap-1"
         action=""
@@ -107,16 +114,6 @@ const addLocation = (location: string) => {
           </div>
         </label>
       </form>
-      <draggable
-        v-model="locationsArr"
-        @start="drag = true"
-        @end="drag = false"
-        item-key="element"
-      >
-        <template #item="{ element }">
-          <div>{{ element }}</div>
-        </template>
-      </draggable>
     </aside>
     <button
       class="hover:border-transparent absolute top-4 right-5"
@@ -127,8 +124,14 @@ const addLocation = (location: string) => {
         class="w-5"
       />
     </button>
-    <div v-for="location in locationsArr">
-      <CityItem :city="location" />
+    <div
+      v-if="!editMode"
+      v-for="location in locationsArr"
+    >
+      <CityItem
+        :city="location"
+        :key="location"
+      />
     </div>
   </main>
 </template>
