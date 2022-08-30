@@ -65,7 +65,7 @@ const addLocation = (locationName: string) => {
       >
         <template #item="{ element }">
           <li
-            class="mb-3 list-none border-2 border-indigo-600 flex justify-between p-1"
+            class="mb-3 list-none border-2 border-indigo-200 rounded flex justify-between p-1"
           >
             <div class="flex gap-2">
               <ArrowsPointingOutIcon
@@ -121,6 +121,7 @@ const addLocation = (locationName: string) => {
       />
     </button>
     <div
+      class="border-2 border-indigo-200 rounded"
       v-if="!editMode"
       v-for="location in locationsArr"
     >
