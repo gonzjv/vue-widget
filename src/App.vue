@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  onUpdated,
-  reactive,
-  ref,
-  toRefs,
-} from 'vue';
+import { reactive, toRefs } from 'vue';
 import CityItem from './components/CityItem.vue';
 import {
   Cog8ToothIcon,
@@ -13,16 +8,15 @@ import {
   ArrowUturnLeftIcon,
   CheckIcon,
 } from '@heroicons/vue/24/outline';
-import { IState } from './interfaces/interfaces';
 import draggable from 'vuedraggable';
-
-onUpdated(() => {
-  console.log('locationArr', locationsArr);
-});
+import { v4 as uuidv4 } from 'uuid';
 
 let state = reactive({
   editMode: false,
-  locationsArr: ['Minsk', 'Soligorsk'],
+  locationsArr: [
+    { name: 'Minsk', id: '0' },
+    { name: 'Saint-Petersburg', id: '1' },
+  ],
   newLocation: '',
 });
 
@@ -30,18 +24,17 @@ let { editMode, locationsArr, newLocation } =
   toRefs(state);
 // const editMode = ref(false);
 const drag = false;
-const deleteLocation = (location: string) => {
+const deleteLocation = (locationId: string) => {
   locationsArr.value = locationsArr.value.filter(
-    (el) => el !== location
+    (el) => el.id !== locationId
   );
 };
 
-const addLocation = (location: string) => {
-  locationsArr.value.push(location);
-  console.log(
-    'new locationArr',
-    locationsArr.value
-  );
+const addLocation = (locationName: string) => {
+  locationsArr.value.push({
+    name: locationName,
+    id: uuidv4(),
+  });
 };
 </script>
 
@@ -68,6 +61,7 @@ const addLocation = (location: string) => {
         v-model="locationsArr"
         @start="drag = true"
         @end="drag = false"
+        item-key="id"
       >
         <template #item="{ element }">
           <li
@@ -78,14 +72,16 @@ const addLocation = (location: string) => {
                 class="w-5"
               />
               <p>
-                {{ element }}
+                {{ element.name }}
               </p>
             </div>
             <button
               class="w-10 flex justify-center"
             >
               <TrashIcon
-                @click="deleteLocation(element)"
+                @click="
+                  deleteLocation(element.id)
+                "
                 class="w-5"
               />
             </button>
@@ -129,8 +125,8 @@ const addLocation = (location: string) => {
       v-for="location in locationsArr"
     >
       <CityItem
-        :city="location"
-        :key="location"
+        :city="location.name"
+        :key="location.id"
       />
     </div>
   </main>
