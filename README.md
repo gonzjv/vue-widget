@@ -11,5 +11,5 @@ All you need is just 🎹 adding next code to your HTML layout:
     height="800"
     title="Current weather"
     frameborder="0"
-</iframe>
+></iframe>
 ```
