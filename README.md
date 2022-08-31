@@ -1,8 +1,8 @@
-# Weather widget (Vue 3 + TypeScript + Vite)
+# ⛅ Weather widget (Vue 3 + TypeScript + Vite)
 
 ## How to use
 
-All you need is just adding next code to your HTML layout:
+All you need is just 🎹 adding next code to your HTML layout:
 
 ```
 <iframe
